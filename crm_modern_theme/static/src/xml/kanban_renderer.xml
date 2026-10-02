@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="web.KanbanRenderer" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_kanban_group')]" position="attributes">
+            <attribute name="t-attf-class"> {{ group.values and group.values.color ? 'o_kanban_color_' + group.values.color : '' }}</attribute>
+        </xpath>
+    </t>
+
+    <t t-inherit="web.KanbanHeader" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('o_kanban_quick_add')]" position="attributes">
+            <attribute name="t-if">canQuickCreate() and (group.values and group.values.is_quick_create_allowed !== false)</attribute>
+        </xpath>
+    </t>
+
+    <t t-inherit="mail.RottingKanbanHeader" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('o_kanban_quick_add')]" position="attributes">
+            <attribute name="t-if">canQuickCreate() and (group.values and group.values.is_quick_create_allowed !== false)</attribute>
+        </xpath>
+    </t>
+</templates>

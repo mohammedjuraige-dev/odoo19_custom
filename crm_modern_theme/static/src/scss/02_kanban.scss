@@ -1,0 +1,357 @@
+// ============================================================================
+// CRM Modern Theme — Pipeline / Opportunities kanban board
+// ----------------------------------------------------------------------------
+// Scoped to:
+//   .o_opportunity_kanban       -> Pipeline & Forecast kanban (CRM core class)
+//   .o_crm_theme_kanban_leads   -> Leads kanban (marker class we added)
+// ============================================================================
+
+.o_opportunity_kanban,
+.o_crm_theme_kanban_leads {
+
+    // ---- Board background --------------------------------------------------
+    .o_kanban_renderer {
+        background-color: #F3F4F6;
+        background-image: radial-gradient(#E5E7EB 1.5px, transparent 0);
+        background-size: 16px 16px;
+        padding: 20px 16px 0;
+        gap: 16px;
+    }
+
+    // ---- Column ("o_kanban_group") -----------------------------------------
+    .o_kanban_group {
+        border: 1px solid var(--crm-border);
+        border-radius: var(--crm-radius-lg);
+        box-shadow: var(--crm-shadow-sm);
+        position: relative;
+        padding-top: 0 !important;
+
+        // Dynamic Stage Color styling (color picker indices 1 to 11)
+        &.o_kanban_color_1 {
+            --KanbanGroup-background: #FFEBEE;
+            .o_kanban_header { background-image: linear-gradient(135deg, #FF5252, #FF1744) !important; }
+            .o_kanban_record { border-left: 5px solid #FF5252 !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(255, 82, 82, 0.18) !important; border-color: #FF5252 !important; }
+        }
+        &.o_kanban_color_2 {
+            --KanbanGroup-background: #FFF3E0;
+            .o_kanban_header { background-image: linear-gradient(135deg, #FF9100, #FF6D00) !important; }
+            .o_kanban_record { border-left: 5px solid #FF9100 !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(255, 145, 0, 0.18) !important; border-color: #FF9100 !important; }
+        }
+        &.o_kanban_color_3 {
+            --KanbanGroup-background: #FFFDE7;
+            .o_kanban_header { background-image: linear-gradient(135deg, #FFEA00, #FFD600) !important; }
+            .o_kanban_record { border-left: 5px solid #FFD600 !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(255, 214, 0, 0.18) !important; border-color: #FFD600 !important; }
+        }
+        &.o_kanban_color_4 {
+            --KanbanGroup-background: #E0F7FA;
+            .o_kanban_header { background-image: linear-gradient(135deg, #00E5FF, #00B0FF) !important; }
+            .o_kanban_record { border-left: 5px solid #00E5FF !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(0, 229, 255, 0.15) !important; border-color: #00E5FF !important; }
+        }
+        &.o_kanban_color_5 {
+            --KanbanGroup-background: #E6F4EA;
+            .o_kanban_header { background-image: linear-gradient(135deg, #10B981, #059669) !important; }
+            .o_kanban_record { border-left: 5px solid #10B981 !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(16, 185, 129, 0.15) !important; border-color: #10B981 !important; }
+        }
+        &.o_kanban_color_6 {
+            --KanbanGroup-background: #E0F7FF;
+            .o_kanban_header { background-image: linear-gradient(135deg, #00C4FB, #00A6DF) !important; }
+            .o_kanban_record { border-left: 5px solid #00C4FB !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(0, 196, 251, 0.15) !important; border-color: #00C4FB !important; }
+        }
+        &.o_kanban_color_7 {
+            --KanbanGroup-background: #EEF2FF;
+            .o_kanban_header { background-image: linear-gradient(135deg, #4E70EC, #2C4EC2) !important; }
+            .o_kanban_record { border-left: 5px solid #4E70EC !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(78, 112, 236, 0.15) !important; border-color: #4E70EC !important; }
+        }
+        &.o_kanban_color_8 {
+            --KanbanGroup-background: #F5F3FF;
+            .o_kanban_header { background-image: linear-gradient(135deg, #8B5CF6, #6D28D9) !important; }
+            .o_kanban_record { border-left: 5px solid #8B5CF6 !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(139, 92, 246, 0.15) !important; border-color: #8B5CF6 !important; }
+        }
+        &.o_kanban_color_9 {
+            --KanbanGroup-background: #FDF2F8;
+            .o_kanban_header { background-image: linear-gradient(135deg, #EC4899, #BE185D) !important; }
+            .o_kanban_record { border-left: 5px solid #EC4899 !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(236, 72, 153, 0.15) !important; border-color: #EC4899 !important; }
+        }
+        &.o_kanban_color_10 {
+            --KanbanGroup-background: #F7FEE7;
+            .o_kanban_header { background-image: linear-gradient(135deg, #84CC16, #65A30D) !important; }
+            .o_kanban_record { border-left: 5px solid #84CC16 !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(132, 204, 22, 0.15) !important; border-color: #84CC16 !important; }
+        }
+        &.o_kanban_color_11 {
+            --KanbanGroup-background: #FAF5FF;
+            .o_kanban_header { background-image: linear-gradient(135deg, #A855F7, #7E22CE) !important; }
+            .o_kanban_record { border-left: 5px solid #A855F7 !important; }
+            .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(168, 85, 247, 0.15) !important; border-color: #A855F7 !important; }
+        }
+
+        // Fallback color cycling if stage has no color set (Index 0 or False)
+        &:not([class*="o_kanban_color_"]),
+        &.o_kanban_color_0 {
+            &:nth-of-type(6n + 1) { --KanbanGroup-background: #EBF8FF; .o_kanban_header { background-image: linear-gradient(135deg, #00C4FB, #00A6DF) !important; } .o_kanban_record { border-left: 5px solid #00C4FB !important; } .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(0, 196, 251, 0.15) !important; border-color: #00C4FB !important; } }
+            &:nth-of-type(6n + 2) { --KanbanGroup-background: #EEF2FF; .o_kanban_header { background-image: linear-gradient(135deg, #4E70EC, #2C4EC2) !important; } .o_kanban_record { border-left: 5px solid #4E70EC !important; } .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(78, 112, 236, 0.15) !important; border-color: #4E70EC !important; } }
+            &:nth-of-type(6n + 3) { --KanbanGroup-background: #F5F3FF; .o_kanban_header { background-image: linear-gradient(135deg, #8B5CF6, #6D28D9) !important; } .o_kanban_record { border-left: 5px solid #8B5CF6 !important; } .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(139, 92, 246, 0.15) !important; border-color: #8B5CF6 !important; } }
+            &:nth-of-type(6n + 4) { --KanbanGroup-background: #FFFBEB; .o_kanban_header { background-image: linear-gradient(135deg, #F59E0B, #D97706) !important; } .o_kanban_record { border-left: 5px solid #F59E0B !important; } .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(245, 158, 11, 0.15) !important; border-color: #F59E0B !important; } }
+            &:nth-of-type(6n + 5) { --KanbanGroup-background: #FDF2F8; .o_kanban_header { background-image: linear-gradient(135deg, #EC4899, #BE185D) !important; } .o_kanban_record { border-left: 5px solid #EC4899 !important; } .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(236, 72, 153, 0.15) !important; border-color: #EC4899 !important; } }
+            &:nth-of-type(6n + 6) { --KanbanGroup-background: #ECFDF5; .o_kanban_header { background-image: linear-gradient(135deg, #10B981, #059669) !important; } .o_kanban_record { border-left: 5px solid #10B981 !important; } .o_kanban_record:hover { box-shadow: 0 10px 20px rgba(16, 185, 129, 0.15) !important; border-color: #10B981 !important; } }
+        }
+    }
+
+    // ---- Column Header Chevron ----------------------------------------------
+    .o_kanban_header {
+        margin: 0 calc(-1 * var(--KanbanGroup-padding-h, 16px)) 12px !important;
+        padding: 12px calc(var(--KanbanGroup-padding-h, 16px) + 12px) 12px var(--KanbanGroup-padding-h, 16px) !important;
+        border-radius: var(--crm-radius-lg) var(--crm-radius-lg) 0 0 !important;
+        clip-path: polygon(0% 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 0% 100%);
+    }
+
+    .o_column_title {
+        color: #FFFFFF !important;
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.2px;
+    }
+
+    .o_kanban_header .o_kanban_config .btn i,
+    .o_kanban_header .o_kanban_quick_add i,
+    .o_kanban_header .o_column_unfold i {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    // ---- Progress Bar --------------------------------------------------------
+    .o_kanban_counter {
+        margin-top: 6px;
+        width: 100% !important;
+
+        .o_column_progress {
+            height: 6px;
+            border-radius: 999px;
+            background-color: rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            width: 100% !important;
+            margin-right: 0 !important;
+        }
+        .progress-bar {
+            border-radius: 999px;
+        }
+        .o_animated_number {
+            display: none !important;
+        }
+    }
+
+    // ---- Drag & drop feedback ------------------------------------------------
+    .o_kanban_renderer {
+        --KanbanColumn__highlight-background: rgba(78, 112, 236, 0.08);
+        --KanbanColumn__highlight-border: var(--crm-accent);
+    }
+
+    @keyframes crm-drop-pulse {
+        0%   { box-shadow: 0 0 0 0 rgba(78, 112, 236, 0.3) inset; }
+        50%  { box-shadow: 0 0 0 6px rgba(78, 112, 236, 0.1) inset; }
+        100% { box-shadow: 0 0 0 0 rgba(78, 112, 236, 0.3) inset; }
+    }
+
+    .o_kanban_group.o_kanban_hover {
+        animation: crm-drop-pulse 1.1s ease-in-out infinite;
+    }
+
+    .o_kanban_record.o_dragged {
+        box-shadow: var(--crm-shadow-glow);
+        transform: rotate(-1deg) scale(1.02);
+        opacity: 0.95;
+    }
+
+    // ---- Cards ---------------------------------------------------------------
+    .o_kanban_record {
+        background-color: var(--crm-surface);
+        border: 1px solid var(--crm-border);
+        border-radius: var(--crm-radius-md);
+        box-shadow: var(--crm-shadow-sm);
+        padding: 14px;
+        margin-bottom: 12px;
+        flex-direction: column;
+        transition: transform var(--crm-transition), box-shadow var(--crm-transition), border-color var(--crm-transition);
+
+        &:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        &.o_kanban_ghost { box-shadow: none !important; }
+    }
+
+    // Opportunity title
+    .o_kanban_record .fw-bold.fs-5 {
+        font-size: 0.98rem !important;
+        color: var(--crm-text);
+        font-weight: 700 !important;
+        line-height: 1.4;
+        margin-bottom: 6px;
+        display: block;
+        transition: color var(--crm-transition);
+
+        &:hover {
+            color: var(--crm-accent);
+        }
+    }
+
+    // Expected revenue / Price tag styled as a Bitrix-style green revenue badge
+    .o_kanban_card_crm_lead_revenue {
+        display: inline-flex;
+        align-items: center;
+        background-color: #ECFDF5;
+        color: #065F46;
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 3px 8px;
+        border-radius: var(--crm-radius-sm);
+        margin-top: 4px;
+        margin-bottom: 6px;
+        border: 1px solid #A7F3D0;
+        width: fit-content;
+
+        .o_field_monetary {
+            color: inherit !important;
+            font-weight: 700;
+        }
+    }
+
+    // Contact / partner line
+    .o_kanban_record .text-truncate {
+        color: var(--crm-text-muted);
+        font-size: 0.82rem;
+    }
+
+    // Tag pills
+    .o_kanban_record .o_tag {
+        font-size: 0.72rem;
+        padding: 3px 10px;
+        margin-top: 6px;
+        border-radius: 99px;
+        transition: transform var(--crm-transition);
+
+        &:hover { transform: translateY(-1px); }
+    }
+
+    // Footer: priority stars + activity + assignee avatar
+    .o_kanban_record footer {
+        border-top: 1px solid var(--crm-border-soft);
+        margin-top: 10px;
+        padding-top: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .o_kanban_record .o_priority_star {
+        color: #D1D5DB;
+        transition: transform var(--crm-transition), color var(--crm-transition);
+
+        &.fa-star { color: var(--crm-warning); }
+
+        &:hover {
+            color: var(--crm-warning);
+            transform: scale(1.35);
+        }
+    }
+
+    // Round assignee avatars
+    .o_kanban_record .o_m2o_avatar img,
+    .o_kanban_record .o_avatar_user img {
+        border-radius: 50% !important;
+        box-shadow: 0 0 0 2px var(--crm-surface), 0 0 0 3px var(--crm-accent);
+        transition: box-shadow var(--crm-transition);
+    }
+
+    .o_kanban_record:hover .o_m2o_avatar img,
+    .o_kanban_record:hover .o_avatar_user img {
+        box-shadow: 0 0 0 2px var(--crm-surface), 0 0 0 3px var(--crm-accent-2);
+    }
+
+    // ---- Bitrix24 Style Activity Clock Badges -------------------------------
+    .o-mail-ActivityButton {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 24px !important;
+        height: 24px !important;
+        border-radius: 50% !important;
+        transition: all var(--crm-transition) !important;
+        cursor: pointer !important;
+
+        i {
+            font-size: 0.85rem !important;
+        }
+
+        // Overdue (Red)
+        &:has(.text-danger) {
+            background-color: #FEE2E2 !important;
+            border: 1px solid #FCA5A5 !important;
+            color: #DC2626 !important;
+
+            i { color: #DC2626 !important; }
+
+            &:hover {
+                transform: scale(1.15);
+                background-color: #DC2626 !important;
+                color: #FFFFFF !important;
+                i { color: #FFFFFF !important; }
+            }
+        }
+
+        // Today (Yellow)
+        &:has(.text-warning) {
+            background-color: #FEF3C7 !important;
+            border: 1px solid #FCD34D !important;
+            color: #D97706 !important;
+
+            i { color: #D97706 !important; }
+
+            &:hover {
+                transform: scale(1.15);
+                background-color: #D97706 !important;
+                color: #FFFFFF !important;
+                i { color: #FFFFFF !important; }
+            }
+        }
+
+        // Planned (Green)
+        &:has(.text-success) {
+            background-color: #D1FAE5 !important;
+            border: 1px solid #A7F3D0 !important;
+            color: #059669 !important;
+
+            i { color: #059669 !important; }
+
+            &:hover {
+                transform: scale(1.15);
+                background-color: #059669 !important;
+                color: #FFFFFF !important;
+                i { color: #FFFFFF !important; }
+            }
+        }
+
+        // None / Muted (Gray)
+        &:has(.text-muted), &:not(:has(.text-danger)):not(:has(.text-warning)):not(:has(.text-success)) {
+            background-color: #F3F4F6 !important;
+            border: 1px solid #D1D5DB !important;
+            color: #6B7280 !important;
+
+            i { color: #6B7280 !important; }
+
+            &:hover {
+                transform: scale(1.15);
+                background-color: #6B7280 !important;
+                color: #FFFFFF !important;
+                i { color: #FFFFFF !important; }
+            }
+        }
+    }
+}

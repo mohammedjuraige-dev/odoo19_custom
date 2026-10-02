@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- CRM Approval Manager group -->
+        <record id="group_crm_approval_manager" model="res.groups">
+            <field name="name">CRM Approval Manager</field>
+            <field name="privilege_id" ref="sales_team.res_groups_privilege_sales"/>
+            <field name="comment">Users in this group can configure approvals on CRM pipeline stages.</field>
+        </record>
+    </data>
+</odoo>

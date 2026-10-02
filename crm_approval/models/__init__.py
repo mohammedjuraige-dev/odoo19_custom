@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+from . import crm_stage
+from . import crm_lead
+from . import crm_lead_approval
+from . import crm_lead_refuse_wizard

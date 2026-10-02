@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        IMPORTANT: every record below does exactly one thing — it appends a
+        CSS class to the root tag of an existing CRM view using Odoo's
+        additive attribute syntax:
+
+            <attribute name="class" add="my_class" separator=" "/>
+
+        This APPENDS "my_class" to whatever class list already exists (or
+        creates one if there wasn't any). It never replaces or deletes
+        anything, so it cannot conflict with another module doing the same
+        thing on the same view. No field, button, or business logic is
+        touched anywhere in this file.
+
+        The Pipeline kanban (crm.crm_case_kanban_view_leads) already ships
+        with its own unique class "o_opportunity_kanban" out of the box, so
+        it does not need an inheritance here at all — it's styled directly
+        in 02_kanban.scss.
+
+        Verified against the Odoo 19.0 branch of odoo/odoo on GitHub: the
+        four view ids below (view_crm_lead_kanban, crm_case_tree_view_leads,
+        crm_case_tree_view_oppor, crm_lead_view_form), their root tags
+        (kanban / list / list / form), and the o_opportunity_kanban class on
+        crm_case_kanban_view_leads are all unchanged from 18.0 to 19.0.
+    -->
+
+    <!-- Leads kanban (rarely used by default, but themed for completeness) -->
+    <record id="view_crm_lead_kanban_theme" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.theme</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_lead_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="class" add="o_crm_theme_kanban_leads" separator=" "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Leads list -->
+    <record id="crm_case_tree_view_leads_theme" model="ir.ui.view">
+        <field name="name">crm.lead.list.lead.theme</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="class" add="o_crm_theme_list" separator=" "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Opportunities (Pipeline) list -->
+    <record id="crm_case_tree_view_oppor_theme" model="ir.ui.view">
+        <field name="name">crm.lead.list.opportunity.theme</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="class" add="o_crm_theme_list" separator=" "/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Lead / Opportunity form -->
+    <record id="crm_lead_view_form_theme" model="ir.ui.view">
+        <field name="name">crm.lead.form.theme</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="class" add="o_crm_theme_form" separator=" "/>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Hide Revenue from cards and strip MRR totals from the stage header -->
+<record id="crm_case_kanban_view_leads_inherit_hide_revenue" model="ir.ui.view">
+    <field name="name">crm.lead.kanban.hide.revenue</field>
+    <field name="model">crm.lead</field>
+    <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+    <field name="arch" type="xml">
+
+        <!-- 1. Hides the expected and recurring revenue inside the kanban cards -->
+        <xpath expr="//div[hasclass('o_kanban_card_crm_lead_revenue')]" position="attributes">
+            <attribute name="invisible">1</attribute>
+        </xpath>
+
+        <!-- 2. Removes the MRR sum calculation from above the columns -->
+        <xpath expr="//progressbar" position="attributes">
+            <attribute name="recurring_revenue_sum_field"></attribute>
+        </xpath>
+
+    </field>
+</record>
+
+    <!-- Hide Expected Revenue and Probability from Form View -->
+    <record id="crm_lead_view_form_inherit_hide_revenue_probability" model="ir.ui.view">
+        <field name="name">crm.lead.form.hide.revenue.probability</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_revenue']/ancestor::div[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='probability']/ancestor::div[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Hide Expected Revenue and Recurring Revenue from Quick Create Form View -->
+    <record id="quick_create_opportunity_form_inherit_hide_revenue" model="ir.ui.view">
+        <field name="name">crm.lead.form.quick_create.hide.revenue</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='expected_revenue']/ancestor::div[2]/i" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='recurring_revenue']/ancestor::div[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             CRM Lead / Opportunity Form – Approval Buttons + Status
+             ============================================================ -->
+        <record id="crm_lead_form_view_approval" model="ir.ui.view">
+            <field name="name">crm.lead.form.approval</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+
+                <!-- ── Header: Approve / Reject buttons + status bar ── -->
+                <xpath expr="//header" position="inside">
+
+                    <!-- APPROVE — shown only when:
+                         • stage needs approval
+                         • status is 'pending'
+                         • current user is authorised to approve -->
+                    <button name="action_approve"
+                            string="Approve"
+                            type="object"
+                            class="btn-success"
+                            icon="fa-check-circle"
+                            invisible="not current_stage_requires_approval or approval_state != 'pending' or not can_current_user_approve"
+                            confirm="Confirm approval for this opportunity at the current stage?"/>
+
+                    <!-- REJECT — same visibility rules; opens the reason wizard -->
+                    <button name="action_refuse"
+                            string="Reject"
+                            type="object"
+                            class="btn-danger"
+                            icon="fa-times-circle"
+                            invisible="not current_stage_requires_approval or approval_state != 'pending' or not can_current_user_approve"/>
+
+                    <!-- STATUS BAR — visible whenever stage needs approval -->
+                    <field name="approval_state"
+                           widget="statusbar"
+                           statusbar_visible="pending,approved,refused"
+                           invisible="not current_stage_requires_approval"/>
+
+                </xpath>
+
+                <!-- ── Ribbon badges on the form sheet ── -->
+                <xpath expr="//field[@name='stage_id']" position="after">
+                    <div invisible="not current_stage_requires_approval"
+                          style="margin-bottom: 8px;">
+                        <widget name="web_ribbon"
+                                invisible="approval_state != 'pending'"
+                                title="Awaiting Approval"
+                                bg_color="bg-warning"/>
+                        <widget name="web_ribbon"
+                                invisible="approval_state != 'approved'"
+                                title="Approved"
+                                bg_color="bg-success"/>
+                        <widget name="web_ribbon"
+                                invisible="approval_state != 'refused'"
+                                title="Rejected"
+                                bg_color="bg-danger"/>
+                    </div>
+                </xpath>
+
+                <!-- ── Approval History tab ── -->
+                <xpath expr="//page[@name='extra']" position="after">
+                    <page string="Approval History"
+                          name="approval_history"
+                          invisible="approval_count == 0 and not current_stage_requires_approval">
+                        <group>
+                            <group string="Current Status">
+                                <field name="approval_state"
+                                       readonly="1"
+                                       widget="badge"
+                                       decoration-success="approval_state == 'approved'"
+                                       decoration-danger="approval_state == 'refused'"
+                                       decoration-warning="approval_state == 'pending'"
+                                       decoration-muted="approval_state == 'not_required'"/>
+                                <field name="previous_stage_id" readonly="1" string="Revert Stage"/>
+                            </group>
+                            <group string="Stats">
+                                <field name="approval_count"
+                                       string="Total Approval Entries"
+                                       readonly="1"/>
+                            </group>
+                        </group>
+
+                        <!-- Full approval log -->
+                        <field name="approval_ids"
+                               widget="one2many_list"
+                               nolabel="1"
+                               readonly="1">
+                            <list string="Approval History"
+                                  decoration-success="state == 'approved'"
+                                  decoration-danger="state == 'refused'"
+                                  decoration-warning="state == 'pending'">
+                                <field name="date"/>
+                                <field name="stage_id"/>
+                                <field name="approver_user_id"/>
+                                <field name="state"
+                                       widget="badge"
+                                       decoration-success="state == 'approved'"
+                                       decoration-danger="state == 'refused'"
+                                       decoration-warning="state == 'pending'"/>
+                                <field name="note" optional="show"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- ============================================================
+             CRM Lead Kanban – Approval State Badge
+             ============================================================ -->
+        <record id="crm_lead_kanban_view_approval" model="ir.ui.view">
+            <field name="name">crm.lead.kanban.approval</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_lead_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="inside">
+                    <field name="approval_state" invisible="1"/>
+                    <field name="current_stage_requires_approval" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <span invisible="approval_state != 'pending'" class="text-warning ms-1" title="Pending Approval">
+                        <i class="fa fa-clock-o" aria-label="Pending Approval" role="img"/>
+                    </span>
+                </xpath>
+                <xpath expr="//footer" position="before">
+                    <div invisible="not current_stage_requires_approval">
+                        <span class="badge text-bg-warning"
+                              invisible="approval_state != 'pending'">
+                            <i class="fa fa-clock-o me-1"/>Awaiting Approval
+                        </span>
+                        <span class="badge text-bg-success"
+                              invisible="approval_state != 'approved'">
+                            <i class="fa fa-check-circle me-1"/>Approved
+                        </span>
+                        <span class="badge text-bg-danger"
+                              invisible="approval_state != 'refused'">
+                            <i class="fa fa-times-circle me-1"/>Rejected
+                        </span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             CRM Lead Pipeline Kanban – Approval State Badge & Icon
+             ============================================================ -->
+        <record id="crm_lead_kanban_view_leads_approval" model="ir.ui.view">
+            <field name="name">crm.lead.kanban.leads.approval</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="inside">
+                    <field name="approval_state" invisible="1"/>
+                    <field name="current_stage_requires_approval" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <span invisible="approval_state != 'pending'" class="text-warning ms-1" title="Pending Approval">
+                        <i class="fa fa-clock-o" aria-label="Pending Approval" role="img"/>
+                    </span>
+                </xpath>
+                <xpath expr="//footer" position="before">
+                    <div invisible="not current_stage_requires_approval">
+                        <span class="badge text-bg-warning"
+                              invisible="approval_state != 'pending'">
+                            <i class="fa fa-clock-o me-1"/>Awaiting Approval
+                        </span>
+                        <span class="badge text-bg-success"
+                              invisible="approval_state != 'approved'">
+                            <i class="fa fa-check-circle me-1"/>Approved
+                        </span>
+                        <span class="badge text-bg-danger"
+                              invisible="approval_state != 'refused'">
+                            <i class="fa fa-times-circle me-1"/>Rejected
+                        </span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             CRM Lead List View – Approval State Column
+             ============================================================ -->
+        <record id="crm_lead_all_leads_approval" model="ir.ui.view">
+            <field name="name">crm.lead.list.approval</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='stage_id']" position="after">
+                    <field name="approval_state"
+                           optional="show"
+                           widget="badge"
+                           decoration-success="approval_state == 'approved'"
+                           decoration-danger="approval_state == 'refused'"
+                           decoration-warning="approval_state == 'pending'"
+                           decoration-muted="approval_state == 'not_required'"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             Approval History standalone list action
+             ============================================================ -->
+        <record id="action_crm_lead_approval_history" model="ir.actions.act_window">
+            <field name="name">Approval History</field>
+            <field name="res_model">crm.lead.approval</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{}</field>
+        </record>
+
+        <!-- Approval History – List -->
+        <record id="view_crm_lead_approval_list" model="ir.ui.view">
+            <field name="name">crm.lead.approval.list</field>
+            <field name="model">crm.lead.approval</field>
+            <field name="arch" type="xml">
+                <list string="CRM Approval History"
+                      decoration-success="state == 'approved'"
+                      decoration-danger="state == 'refused'"
+                      decoration-warning="state == 'pending'">
+                    <field name="lead_id"/>
+                    <field name="stage_id"/>
+                    <field name="approver_user_id"/>
+                    <field name="state"
+                           widget="badge"
+                           decoration-success="state == 'approved'"
+                           decoration-danger="state == 'refused'"
+                           decoration-warning="state == 'pending'"/>
+                    <field name="date"/>
+                    <field name="note"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Approval History – Form -->
+        <record id="view_crm_lead_approval_form" model="ir.ui.view">
+            <field name="name">crm.lead.approval.form</field>
+            <field name="model">crm.lead.approval</field>
+            <field name="arch" type="xml">
+                <form string="Approval Record">
+                    <header>
+                        <field name="state"
+                               widget="statusbar"
+                               statusbar_visible="pending,approved,refused"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Record">
+                                <field name="lead_id"/>
+                                <field name="stage_id"/>
+                            </group>
+                            <group string="Approval">
+                                <field name="approver_user_id"/>
+                                <field name="date"/>
+                                <field name="state"
+                                       widget="badge"
+                                       decoration-success="state == 'approved'"
+                                       decoration-danger="state == 'refused'"
+                                       decoration-warning="state == 'pending'"/>
+                            </group>
+                        </group>
+                        <group string="Notes / Reason">
+                            <field name="note" nolabel="1"
+                                   placeholder="Reason or note…"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ============================================================
+             Menu – CRM > Reporting > Approval History
+             ============================================================ -->
+        <menuitem id="menu_crm_approval_history"
+                  name="Approval History"
+                  parent="crm.crm_menu_report"
+                  action="action_crm_lead_approval_history"
+                  sequence="99"/>
+
+    </data>
+</odoo>

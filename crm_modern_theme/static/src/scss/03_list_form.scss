@@ -1,0 +1,128 @@
+// ============================================================================
+// CRM Modern Theme — Leads/Opportunities list and Lead/Opportunity form
+// ----------------------------------------------------------------------------
+// Scoped to:
+//   .o_crm_theme_list  -> added to crm.lead list views only (see views/crm_theme_views.xml)
+//   .o_crm_theme_form  -> added to the crm.lead form view only
+//
+// No other model's list/form view carries these classes, so nothing here can
+// leak into Sales Orders, Invoicing, Inventory, etc.
+// ============================================================================
+
+.o_crm_theme_list {
+
+    .o_list_table thead > tr {
+        background-image: linear-gradient(135deg, var(--crm-accent), var(--crm-accent-2));
+
+        > th {
+            font-weight: 600;
+            color: #fff;
+            border-bottom: none;
+        }
+
+        // Sort-direction caret needs to switch from dark to light now that
+        // the header is a solid colour band. NOTE: confirmed against Odoo
+        // 19.0's list_renderer.xml — this class was renamed from
+        // .o_list_sortable_caret (18.0) to .o_list_sortable_icon (19.0).
+        .o_list_sortable_icon {
+            color: rgba(255, 255, 255, 0.85);
+        }
+    }
+
+    // Subtle zebra striping with a colour tint instead of plain grey,
+    // tying the list back to the same accent used on the kanban board
+    .o_data_row:nth-of-type(even) {
+        background-color: var(--crm-bg);
+    }
+
+    .o_data_row {
+        transition: background-color var(--crm-transition);
+
+        // Animated accent bar that grows in on hover, tying the row back
+        // to the same accent colour used across the kanban board
+        > td:first-child {
+            box-shadow: inset 3px 0 0 0 transparent;
+            transition: box-shadow var(--crm-transition);
+        }
+
+        &:hover {
+            > td {
+                background-color: var(--crm-accent-soft);
+            }
+            > td:first-child {
+                box-shadow: inset 3px 0 0 0 var(--crm-accent);
+            }
+        }
+    }
+
+    .o_tag {
+        font-size: 0.7rem;
+        padding: 2px 9px;
+        transition: transform var(--crm-transition);
+
+        &:hover { transform: translateY(-1px); }
+    }
+
+    .o_priority_star {
+        transition: transform var(--crm-transition), color var(--crm-transition);
+
+        &.fa-star { color: var(--crm-warning); }
+
+        &:hover {
+            color: var(--crm-warning);
+            transform: scale(1.2);
+        }
+    }
+}
+
+.o_crm_theme_form {
+
+    .o_form_sheet_bg {
+        background-color: var(--crm-bg);
+        background-image:
+            radial-gradient(circle at 0% 0%, rgba(79, 70, 229, 0.05) 0%, transparent 38%),
+            radial-gradient(circle at 100% 0%, rgba(219, 39, 119, 0.04) 0%, transparent 38%);
+    }
+
+    .o_form_sheet {
+        border-radius: var(--crm-radius-lg);
+        box-shadow: var(--crm-shadow-sm);
+        border-top: 3px solid var(--crm-accent);
+    }
+
+    // Stage statusbar: current stage gets the accent gradient, and the
+    // other stages light up on hover so clicking through feels responsive
+    .o_statusbar_status .o_arrow_button {
+        transition: background-color var(--crm-transition), color var(--crm-transition), border-color var(--crm-transition);
+
+        &.o_arrow_button_current {
+            background-image: linear-gradient(135deg, var(--crm-accent), var(--crm-accent-2));
+            border-color: var(--crm-accent);
+            color: #fff;
+        }
+
+        &:not(.o_arrow_button_current):not(:disabled):hover {
+            background-color: var(--crm-accent-soft);
+            border-color: var(--crm-accent);
+            color: var(--crm-accent);
+        }
+    }
+
+    .o_priority_star {
+        transition: transform var(--crm-transition), color var(--crm-transition);
+
+        &.fa-star { color: var(--crm-warning); }
+
+        &:hover {
+            color: var(--crm-warning);
+            transform: scale(1.2);
+        }
+    }
+
+    .o_tag {
+        font-size: 0.72rem;
+        transition: transform var(--crm-transition);
+
+        &:hover { transform: translateY(-1px); }
+    }
+}

@@ -1,0 +1,42 @@
+// ============================================================================
+// CRM Modern Theme — buttons & empty state
+// ----------------------------------------------------------------------------
+// Same scoping as 02_kanban.scss. The "New" button and the no-content
+// helper both render inside the kanban view's own root element (the one
+// carrying .o_opportunity_kanban / .o_crm_theme_kanban_leads), so they are
+// safely reachable here without affecting the "New" button or empty states
+// of any other app.
+// ============================================================================
+
+.o_opportunity_kanban,
+.o_crm_theme_kanban_leads {
+
+    .o-kanban-button-new {
+        background-image: linear-gradient(135deg, var(--crm-accent), var(--crm-accent-2));
+        background-color: var(--crm-accent); // fallback if gradients are unsupported
+        border-color: var(--crm-accent);
+        border-radius: var(--crm-radius-sm);
+        box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+        transition: transform var(--crm-transition), box-shadow var(--crm-transition);
+
+        &:hover {
+            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.35);
+            transform: translateY(-1px);
+        }
+
+        &:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+        }
+    }
+
+    // NOTE: the real inner wrapper class is .o_nocontent_help, confirmed in
+    // web/views/no_content_helpers.xml on both 18.0 and 19.0. The original
+    // selector here (.o_view_nocontent_content) doesn't exist anywhere in
+    // that template, so this rule was previously a silent no-op.
+    .o_view_nocontent {
+        .o_nocontent_help {
+            color: var(--crm-text-muted);
+        }
+    }
+}

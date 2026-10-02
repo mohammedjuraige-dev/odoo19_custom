@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_crm_quick_add" model="res.groups">
+        <field name="name">CRM Pipeline: Quick Add Leads on Restricted Stages</field>
+        <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+    </record>
+</odoo>

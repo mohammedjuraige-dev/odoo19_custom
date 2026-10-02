@@ -1,0 +1,37 @@
+// ============================================================================
+// CRM Modern Theme — design tokens
+// ============================================================================
+
+:root {
+    // Neutral surfaces
+    --crm-bg:           #F3F4F6;
+    --crm-surface:      #FFFFFF;
+    --crm-border:       #E5E7EB;
+    --crm-border-soft:  #F3F4F6;
+
+    // Text
+    --crm-text:         #1F2937;
+    --crm-text-muted:   #6B7280;
+
+    // Brand accent (Bitrix-style blue) + semantic colours
+    --crm-accent:       #4E70EC;
+    --crm-accent-2:     #3B5998;
+    --crm-accent-soft:  #EEF2FF;
+    --crm-success:      #10B981;
+    --crm-warning:      #F59E0B;
+    --crm-danger:       #EF4444;
+
+    // Geometry
+    --crm-radius-lg:    12px;
+    --crm-radius-md:    8px;
+    --crm-radius-sm:    6px;
+
+    // Elevation
+    --crm-shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.05);
+    --crm-shadow-md:    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --crm-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --crm-shadow-glow:  0 0 0 3px rgba(78, 112, 236, 0.35);
+
+    // Motion
+    --crm-transition:   0.2s ease-in-out;
+}

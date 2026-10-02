@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             Rejection Reason Wizard – Form View
+             ============================================================ -->
+        <record id="view_crm_lead_refuse_wizard_form" model="ir.ui.view">
+            <field name="name">crm.lead.refuse.wizard.form</field>
+            <field name="model">crm.lead.refuse.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reject Opportunity">
+                    <sheet>
+                        <!-- Hidden context fields -->
+                        <field name="lead_id" invisible="1"/>
+                        <field name="stage_id" invisible="1"/>
+
+                        <!-- Header banner -->
+                        <div class="alert alert-danger d-flex align-items-center gap-2 mb-3" role="status">
+                            <i class="fa fa-times-circle fa-2x text-danger" title="Rejection Warning"/>
+                            <div>
+                                <strong>You are about to reject this opportunity.</strong><br/>
+                                The opportunity will be reverted to its previous pipeline stage
+                                and the reason you provide below will be recorded in the chatter.
+                            </div>
+                        </div>
+
+                        <group>
+                            <group string="Details">
+                                <field name="lead_id" readonly="1"/>
+                                <field name="stage_id" readonly="1" string="Rejected Stage"/>
+                                <field name="previous_stage_id" readonly="1" string="Will Revert To"/>
+                            </group>
+                        </group>
+
+                        <group string="Rejection Reason">
+                            <field name="reason"
+                                   nolabel="1"
+                                   placeholder="Please enter the reason for rejection…"
+                                   widget="text"
+                                   style="min-height: 100px;"/>
+                        </group>
+                    </sheet>
+
+                    <footer>
+                        <button name="action_confirm_refuse"
+                                string="Confirm Rejection"
+                                type="object"
+                                class="btn-danger"
+                                icon="fa-times-circle"
+                                data-hotkey="q"/>
+                        <button string="Cancel"
+                                class="btn-secondary"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ============================================================
+             CRM Stage Form – inject Approval section
+             ============================================================ -->
+        <record id="crm_stage_form_view_approval" model="ir.ui.view">
+            <field name="name">crm.stage.form.approval</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Add Approval tab after main fields -->
+                <xpath expr="//sheet" position="inside">
+                    <separator string="Approval Configuration"/>
+                    <group>
+                        <group string="Approval Settings">
+                            <field name="require_approval"
+                                   widget="boolean_toggle"/>
+                        </group>
+                        <group string="Approver">
+                            <field name="approval_type"
+                                   invisible="not require_approval"/>
+                            <field name="approval_user_id"
+                                   invisible="not require_approval or approval_type != 'user'"
+                                   required="require_approval and approval_type == 'user'"/>
+                            <field name="approval_group_id"
+                                   invisible="not require_approval or approval_type != 'group'"
+                                   required="require_approval and approval_type == 'group'"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info"
+                         role="status"
+                         invisible="not require_approval">
+                        <strong>Approval Required: </strong>
+                        <field name="approval_display" readonly="1"/>
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
