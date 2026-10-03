@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View Inheritance (Leads & Opportunities Form) -->
+    <record id="crm_lead_view_form_inherit_deadlines" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.deadlines</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- 3 Deadline Fields (after Expected Closing container) -->
+            <xpath expr="//field[@name='date_deadline']/.." position="after">
+                <field name="x_design_presentation_deadline" />
+                <field name="x_client_submission_deadline" />
+                <field name="x_commercial_proposition_deadline" />
+            </xpath>
+            <!-- Event Name/Date + Lead Source Fields for Opportunities (after Opportunity Phone container) -->
+            <xpath expr="//field[@name='phone' and not(@id)]/.." position="after">
+            	<field name="x_contact_person" />
+                <field name="x_event_name" />
+                <field name="x_event_dates" />
+                <field name="x_event_location" />
+                <field name="x_lead_sources" />
+                <field name="x_size" />
+            </xpath>
+            <!-- Event Name/Date + Lead Source Fields for Leads (after Lead Phone container) -->
+            <xpath expr="//field[@id='phone_group_lead_info']/.." position="after">
+            	<field name="x_contact_person" />
+                <field name="x_event_name" />
+                <field name="x_event_dates" />
+                <field name="x_event_location" />
+                <field name="x_lead_sources" />
+                <field name="x_size" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Opportunity Tree View Inheritance -->
+    <record id="crm_case_tree_view_oppor_inherit_deadlines" model="ir.ui.view">
+        <field name="name">crm.lead.tree.opportunity.inherit.deadlines</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_deadline']" position="after">
+                <field name="x_design_presentation_deadline" optional="hide"/>
+                <field name="x_client_submission_deadline" optional="hide"/>
+                <field name="x_commercial_proposition_deadline" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Opportunity Search View Inheritance -->
+    <record id="view_crm_case_opportunities_filter_inherit_deadlines" model="ir.ui.view">
+        <field name="name">crm.lead.search.opportunity.inherit.deadlines</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+        <field name="arch" type="xml">
+            <!-- Add search filters -->
+            <xpath expr="//filter[@name='date_deadline']" position="after">
+                <filter string="Design Deadline" name="x_design_presentation_deadline" date="x_design_presentation_deadline"/>
+                <filter string="Client Submission Deadline" name="x_client_submission_deadline" date="x_client_submission_deadline"/>
+                <filter string="Commercial Proposal Deadline" name="x_commercial_proposition_deadline" date="x_commercial_proposition_deadline"/>
+                <separator/>
+            </xpath>
+            <!-- Add Group By filters -->
+            <xpath expr="//group/filter[@name='date_deadline']" position="after">
+                <filter string="Design Deadline" name="groupby_x_design_presentation_deadline" context="{'group_by':'x_design_presentation_deadline'}"/>
+                <filter string="Client Submission Deadline" name="groupby_x_client_submission_deadline" context="{'group_by':'x_client_submission_deadline'}"/>
+                <filter string="Commercial Proposal Deadline" name="groupby_x_commercial_proposition_deadline" context="{'group_by':'x_commercial_proposition_deadline'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Opportunity Kanban View Inheritance -->
+    <record id="crm_case_kanban_view_leads_inherit_lead_source" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.inherit.lead_source</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <div class="text-muted small" t-if="record.x_design_presentation_deadline.raw_value">
+                    Design Deadline: <field name="x_design_presentation_deadline"/>
+                </div>
+                <div class="text-muted small" t-if="record.x_client_submission_deadline.raw_value">
+                    Client Submission Deadline: <field name="x_client_submission_deadline"/>
+                </div>
+                <div class="text-muted small" t-if="record.x_commercial_proposition_deadline.raw_value">
+                    Commercial Proposal Deadline: <field name="x_commercial_proposition_deadline"/>
+                </div>
+
+                <div class="text-muted small" t-if="record.x_contact_person.raw_value">
+                    Contact Person: <field name="x_contact_person"/>
+                </div>
+               
+                <div class="text-muted small" t-if="record.x_event_name.raw_value">
+                    Event: <field name="x_event_name"/>
+                </div>
+                <div class="text-muted small" t-if="record.x_event_dates.raw_value">
+                    Event Date: <field name="x_event_dates"/>
+                </div>
+                <div class="text-muted small" t-if="record.x_event_location.raw_value">
+                    Event Location: <field name="x_event_location"/>
+                </div>
+                <div class="text-muted small" t-if="record.x_lead_sources.raw_value">
+                    Source: <field name="x_lead_sources"/>
+                </div>
+                <div class="text-muted small" t-if="record.x_size.raw_value">
+                    Size: <field name="x_size"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
